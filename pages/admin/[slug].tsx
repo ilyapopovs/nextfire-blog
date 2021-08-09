@@ -31,7 +31,7 @@ function PostManager() {
     .collection("posts")
   // @ts-ignore
     .doc(slug);
-  const [post] = useDocumentDataOnce(postRef);
+  const [post]: [any, boolean, Error] = useDocumentDataOnce(postRef);
 
   return (
     <main className={"container"}>
