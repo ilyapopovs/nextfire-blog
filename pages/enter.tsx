@@ -39,7 +39,7 @@ function SignInButton() {
 
 // Sign out button
 export function SignOutButton() {
-  return <button onClick={() => auth.signOut()}>Sign Out</button>;
+  return <button className={'btn'} onClick={() => auth.signOut()}>Sign Out</button>;
 }
 
 // Username form
