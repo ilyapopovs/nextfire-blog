@@ -21,17 +21,19 @@ function PostItem({ post, admin = false }) {
         </a>
       </Link>
 
-      <Link href={`/${post.username}/${post.slug}`}>
-        <h2>
-          <a>{post.title}</a>
-        </h2>
-      </Link>
+      <h2 className={"text-2xl font-bold cursor-pointer my-4"}>
+        <Link href={`/${post.username}/${post.slug}`} passHref>
+          <a className={"inline-block w-full"}>{post.title}</a>
+        </Link>
+      </h2>
 
-      <footer>
-        <span>
+      <footer className={"flex"}>
+        <span className={"inline-block"}>
           {wordCount} words. {minutesToRead} min read
         </span>
-        <span className={"ml-auto"}>💗 {post.heartCount || 0} Hearts</span>
+        <span className={"inline-block ml-auto"}>
+          ❤️ {post.heartCount || 0} Hearts
+        </span>
       </footer>
 
       {/* If admin view, show extra controls for user */}

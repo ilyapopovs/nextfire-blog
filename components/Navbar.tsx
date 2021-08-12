@@ -7,7 +7,11 @@ export default function Navbar() {
   const { user, username } = useContext(UserContext);
 
   return (
-    <nav className={"w-full h-16 sticky top-0 z-50 bg-white font-bold px-4 border-b border-gray-300"}>
+    <nav
+      className={
+        "w-full h-16 sticky top-0 z-50 bg-white font-bold px-4 border-b border-gray-300"
+      }
+    >
       <ul className={"flex justify-center items-center h-full"}>
         <li className={"mr-auto"}>
           <Link href="/" passHref>
@@ -17,7 +21,7 @@ export default function Navbar() {
 
         {
           //user is signed-in and has a username
-          username ? (
+          username && (
             <>
               <li>
                 <SignOutButton />
@@ -37,14 +41,31 @@ export default function Navbar() {
                 </Link>
               </li>
             </>
-          ) : (
+          )
+        }
+
+        {!username && user && (
+          <>
+            <li>
+              <SignOutButton />
+            </li>
             <li>
               <Link href="/enter" passHref>
                 <button className={"btn btn-blue"}>Log in</button>
               </Link>
             </li>
-          )
-        }
+          </>
+        )}
+
+        {!username && !user && (
+          <>
+            <li>
+              <Link href="/enter" passHref>
+                <button className={"btn btn-blue"}>Log in</button>
+              </Link>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );
