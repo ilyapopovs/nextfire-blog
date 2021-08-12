@@ -33,7 +33,7 @@ function PostList() {
 
   return (
     <>
-      <h1>Manage your Posts</h1>
+      <h1 className={"text-2xl font-bold"}>Manage your Posts</h1>
       <PostFeed posts={posts} admin />
     </>
   );
@@ -83,15 +83,19 @@ function CreateNewPost() {
 
   return (
     <form onSubmit={createPost}>
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="My Awesome Article!"
-      />
+      <label>
+        <span className={"label mb-3"}>Post title</span>
+        <input
+          className={"input w-full"}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="My Awesome Article!"
+        />
+      </label>
       <p>
-        <strong>Slug:</strong> {slug}
+        <span className={"label mb-3"}>Slug:</span> {slug}
       </p>
-      <button type="submit" disabled={!isValid} className="btn-green">
+      <button type="submit" disabled={!isValid} className={"btn btn-green"}>
         Create New Post
       </button>
     </form>

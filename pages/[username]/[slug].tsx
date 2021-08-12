@@ -26,7 +26,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  // Improve my using Admin SDK to select empty docs
+  // Optional todo: Improve using Admin SDK to select empty docs
   const snapshot = await firestore.collectionGroup("posts").get();
 
   const paths = snapshot.docs.map((doc) => {
@@ -53,23 +53,23 @@ export default function Post(props) {
   const post = realtimePost || props.post;
 
   return (
-    <main>
-      <section>
+    <main className={"flex justify-between"}>
+      <section className={'pr-8'} style={{ flex: 3 }}>
         <PostContent post={post} />
       </section>
 
-      <aside className="card">
+      <aside className={"card sticky top-0"} style={{ flex: 1 }}>
         <AuthCheck
           fallback={
-            <Link href="/enter">
-              <button>💗 Sign Up</button>
+            <Link href="/enter" passHref>
+              <a className={'btn btn-green'}>❤️ Sign Up</a>
             </Link>
           }
         >
           <HeartButton postRef={postRef} />
         </AuthCheck>
         <p>
-          <strong>{post.heartCount || 0} 🤍</strong>
+          <strong>{post.heartCount || 0} ❤️</strong>
         </p>
       </aside>
     </main>

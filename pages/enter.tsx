@@ -10,7 +10,7 @@ export default function EnterPage(props) {
   // 2. user signed in, but missing username <UsernameForm />
   // 3. user signed in, has username <SignOutButton />
   return (
-    <main>
+    <main className={"flex justify-center"}>
       {user ? (
         !username ? (
           <UsernameForm />
@@ -31,15 +31,20 @@ function SignInButton() {
   };
 
   return (
-    <button className="btn-google" onClick={signInWithGoogle}>
-      <img src={"/google-logo.png"} width="30px" /> Sign in with Google
+    <button className={"btn bg-white"} onClick={signInWithGoogle}>
+      <img src={"/google-logo.png"} width="30px" className={"mr-2"} />
+      Sign in with Google
     </button>
   );
 }
 
 // Sign out button
 export function SignOutButton() {
-  return <button className={'btn'} onClick={() => auth.signOut()}>Sign Out</button>;
+  return (
+    <button className={"btn"} onClick={() => auth.signOut()}>
+      Sign Out
+    </button>
+  );
 }
 
 // Username form
@@ -112,31 +117,40 @@ function UsernameForm() {
   return (
     !username && (
       <section>
-        <h3>Choose Username</h3>
         <form onSubmit={onSubmit}>
-          <input
-            name="username"
-            placeholder="myname"
-            value={formValue}
-            onChange={onChange}
-          />
+          <label>
+            <span className={"text-xl font-bold"}>Choose username:</span>
+            <br />
+            <input
+              name="username"
+              className={"input my-2 mr-4 text-xl"}
+              placeholder="johndoe"
+              value={formValue}
+              onChange={onChange}
+            />
+          </label>
+          <div className={"inline-block mb-2"}>
+            <button
+              type="submit"
+              className={"btn btn-green"}
+              disabled={!isValid}
+            >
+              Choose
+            </button>
+          </div>
           <UsernameMessage
             username={formValue}
             isValid={isValid}
             loading={loading}
           />
-          <button type="submit" className="btn-green" disabled={!isValid}>
-            Choose
-          </button>
-
-          <h3>Debug State</h3>
-          <div>
-            Username: {formValue}
-            <br />
-            Loading: {loading.toString()}
-            <br />
-            Username Valid: {isValid.toString()}
-          </div>
+          {/*<h3>Debug State</h3>*/}
+          {/*<div>*/}
+          {/*  Username: {formValue}*/}
+          {/*  <br />*/}
+          {/*  Loading: {loading.toString()}*/}
+          {/*  <br />*/}
+          {/*  Username Valid: {isValid.toString()}*/}
+          {/*</div>*/}
         </form>
       </section>
     )
@@ -145,12 +159,16 @@ function UsernameForm() {
 
 function UsernameMessage({ username, isValid, loading }) {
   if (loading) {
-    return <p>Checking...</p>;
+    return <p>Checking... 🧐</p>;
   } else if (isValid) {
-    return <p className="text-success">{username} is available!</p>;
+    return (
+      <p className={"text-green-600 font-bold"}>{username} is available 👍</p>
+    );
   } else if (username && !isValid) {
-    return <p className="text-danger">That username is taken!</p>;
+    return (
+      <p className={"text-red-600 font-bold"}>{username} isn't available 😔</p>
+    );
   } else {
-    return <p></p>;
+    return <p className={"h-6"} />;
   }
 }

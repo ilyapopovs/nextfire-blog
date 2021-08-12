@@ -29,16 +29,16 @@ function PostManager() {
     .collection("users")
     .doc(auth.currentUser.uid)
     .collection("posts")
-  // @ts-ignore
+    // @ts-ignore
     .doc(slug);
   const [post]: [any, boolean, Error] = useDocumentDataOnce(postRef);
 
   return (
-    <main className={"container"}>
+    <main>
       {post && (
-        <>
-          <section>
-            <h1>{post.title}</h1>
+        <div className={"flex justify-between"}>
+          <section className={"w-full"} style={{ maxWidth: "70%" }}>
+            <h1 className={"text-2xl font-bold"}>{post.title}</h1>
             <p>ID: {post.slug}</p>
 
             <PostForm
@@ -48,17 +48,17 @@ function PostManager() {
             />
           </section>
 
-          <aside>
-            <h3>Tools</h3>
-            <button onClick={() => setPreview(!preview)}>
+          <aside className={"w-full flex flex-col"} style={{ maxWidth: "25%" }}>
+            <h3 className={'text-lg font-bold'}>Tools</h3>
+            <button className={'btn'} onClick={() => setPreview(!preview)}>
               {preview ? "Edit" : "Preview"}
             </button>
             <Link href={`/${post.username}/${post.slug}`}>
-              <button className="btn-blue">Live view</button>
+              <button className={"btn btn-blue"}>Live view</button>
             </Link>
             <DeletePostButton postRef={postRef} />
           </aside>
-        </>
+        </div>
       )}
     </main>
   );
@@ -87,15 +87,18 @@ function PostForm({ defaultValues, postRef, preview }) {
   return (
     <form onSubmit={handleSubmit(updatePost)}>
       {preview && (
-        <div className="card">
+        <div className={"card"}>
           <ReactMarkdown>{watch("content")}</ReactMarkdown>
         </div>
       )}
 
-      <div className={preview ? "hidden" : "controls"}>
-        <ImageUploader />
+      <div className={preview ? "hidden" : ""}>
+        <div className={"py-2"}>
+          <ImageUploader />
+        </div>
 
         <textarea
+          className={"input w-full"}
           name="content"
           ref={register({
             maxLength: { value: 20000, message: "content is too long" },
@@ -105,22 +108,22 @@ function PostForm({ defaultValues, postRef, preview }) {
         />
 
         {errors.content && (
-          <p className="text-danger">{errors.content.message}</p>
+          <p className={"text-danger"}>{errors.content.message}</p>
         )}
 
-        <fieldset>
+        <label className={"flex items-center my-4 text-xl cursor-pointer"}>
           <input
-            className={"checkbox"}
+            className={"w-6 h-6 mr-2"}
             name="published"
             type="checkbox"
             ref={register}
           />
-          <label>Published</label>
-        </fieldset>
+          Published
+        </label>
 
         <button
           type="submit"
-          className="btn-green"
+          className={"btn btn-green"}
           disabled={!isDirty || !isValid}
         >
           Save Changes
@@ -134,16 +137,15 @@ function DeletePostButton({ postRef }) {
   const router = useRouter();
 
   const deletePost = async () => {
-    const doIt = confirm("are you sure!");
-    if (doIt) {
+    if (confirm("Are you sure?")) {
       await postRef.delete();
       router.push("/admin").then();
-      toast("post annihilated ", { icon: "🗑️" });
+      toast("Post deleted", { icon: "🗑️" });
     }
   };
 
   return (
-    <button className="btn-red" onClick={deletePost}>
+    <button className={"btn btn-red"} onClick={deletePost}>
       Delete
     </button>
   );
