@@ -55,7 +55,9 @@ export default function Home(props) {
       <PostFeed posts={posts} />
 
       {!loading && !postsEnd && (
-        <button onClick={getMorePosts}>Load more</button>
+        <button className={"btn"} onClick={getMorePosts}>
+          Load more
+        </button>
       )}
 
       <Loader show={loading} />

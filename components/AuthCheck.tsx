@@ -11,7 +11,7 @@ export default function AuthCheck(props) {
         <>
           <div>You must be signed in!</div>
           <Link href="/enter">
-            <button className="btn-blue">Sign in</button>
+            <button className={"btn-blue"}>Sign in</button>
           </Link>
         </>
       );

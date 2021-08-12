@@ -14,41 +14,43 @@ function PostItem({ post, admin = false }) {
   const minutesToRead = (wordCount / 100 + 1).toFixed(0);
 
   return (
-    <div className="card">
+    <div className={"card"}>
       <Link href={`/${post.username}`}>
         <a>
           <strong>By @{post.username}</strong>
         </a>
       </Link>
 
-      <Link href={`/${post.username}/${post.slug}`}>
-        <h2>
-          <a>{post.title}</a>
-        </h2>
-      </Link>
+      <h2 className={"text-2xl font-bold cursor-pointer my-4"}>
+        <Link href={`/${post.username}/${post.slug}`} passHref>
+          <a className={"inline-block w-full"}>{post.title}</a>
+        </Link>
+      </h2>
 
-      <footer>
-        <span>
+      <footer className={"flex"}>
+        <span className={"inline-block"}>
           {wordCount} words. {minutesToRead} min read
         </span>
-        <span className="push-left">💗 {post.heartCount || 0} Hearts</span>
+        <span className={"inline-block ml-auto"}>
+          ❤️ {post.heartCount || 0} Hearts
+        </span>
       </footer>
 
       {/* If admin view, show extra controls for user */}
       {admin && (
-        <>
+        <div className={"flex justify-between items-center"}>
           <Link href={`/admin/${post.slug}`}>
             <h3>
-              <button className="btn-blue">Edit</button>
+              <button className={"btn btn-blue w-20"}>Edit</button>
             </h3>
           </Link>
 
           {post.published ? (
-            <p className="text-success">Live</p>
+            <p className={"text-green-600 font-bold"}>Live 🚀</p>
           ) : (
-            <p className="text-danger">Unpublished</p>
+            <p className={"text-blue-600 font-bold"}>Unpublished 🔏</p>
           )}
-        </>
+        </div>
       )}
     </div>
   );

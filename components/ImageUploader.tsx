@@ -43,25 +43,31 @@ export default function ImageUploader() {
   };
 
   return (
-    <div className="box">
+    <div className={"flex justify-between"}>
       <Loader show={uploading} />
       {uploading && <h3>{progress}%</h3>}
 
       {!uploading && (
-        <>
-          <label className="btn">
+        <div>
+          <label className={"inline-block btn w-44"}>
             📸 Upload Img
             <input
+              className={"hidden"}
               type="file"
               onChange={uploadFile}
               accept="image/x-png,image/gif,image/jpeg"
             />
           </label>
-        </>
+        </div>
       )}
 
       {downloadURL && (
-        <code className="upload-snippet">{`![alt](${downloadURL})`}</code>
+        <code
+          className={"h-11 ml-auto my-2 bg-white p-1 my-1 rounded text-xs overflow-x-scroll"}
+          style={{overflowWrap: 'break-word'}}
+        >
+          {`![alt](${downloadURL})`}
+        </code>
       )}
     </div>
   );

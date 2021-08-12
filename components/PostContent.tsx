@@ -3,22 +3,24 @@ import ReactMarkdown from "react-markdown";
 
 // UI component for main post content
 export default function PostContent({ post }) {
-  const createdAt =
+  const createdAt: Date =
     typeof post?.createdAt === "number"
       ? new Date(post.createdAt)
       : post.createdAt.toDate();
 
   return (
-    <div className="card">
-      <h1>{post?.title}</h1>
-      <span className="text-sm">
+    <div className={"card"}>
+      <h1 className={"text-2xl font-bold mb-1"}>{post?.title}</h1>
+      <span className={"text-sm"}>
         Written by{" "}
-        <Link href={`/${post.username}/`}>
-          <a className="text-info">@{post.username}</a>
+        <Link href={`/${post.username}/`} passHref>
+          <a className={"text-blue-700 font-bold"}>@{post.username}</a>
         </Link>{" "}
-        on {createdAt.toISOString()}
+        on {createdAt.toDateString()}
       </span>
-      <ReactMarkdown>{post?.content}</ReactMarkdown>
+      <div className={"mt-4"}>
+        <ReactMarkdown>{post?.content}</ReactMarkdown>
+      </div>
     </div>
   );
 }
