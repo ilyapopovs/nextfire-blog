@@ -19,6 +19,11 @@
     @apply font-noto bg-custom-gray-light;
   }
 
+  nav > div {
+    max-width: 1680px;
+    padding: 0 10vw;
+  }
+
   main {
     padding: 1rem 10vw;
     max-width: 1680px;
