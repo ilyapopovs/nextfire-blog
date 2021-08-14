@@ -41,7 +41,7 @@ function PostItem({ post, admin = false }) {
         <div className={"flex justify-between items-center"}>
           <Link href={`/admin/${post.slug}`}>
             <h3>
-              <button className={"btn btn-blue w-20"}>Edit</button>
+              <button className={"btn btn-primary w-20"}>Edit</button>
             </h3>
           </Link>
 

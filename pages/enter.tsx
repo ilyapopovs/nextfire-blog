@@ -132,7 +132,7 @@ function UsernameForm() {
           <div className={"inline-block mb-2"}>
             <button
               type="submit"
-              className={"btn btn-green"}
+              className={"btn btn-success"}
               disabled={!isValid}
             >
               Choose

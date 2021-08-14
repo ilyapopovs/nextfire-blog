@@ -9,9 +9,11 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <UserContext.Provider value={userData}>
-      <Navbar />
-      <Component {...pageProps} />
-      <Toaster />
+      <div id={"theme-container"} className={"system-theme"}>
+        <Navbar />
+        <Component {...pageProps} />
+        <Toaster />
+      </div>
     </UserContext.Provider>
   );
 }

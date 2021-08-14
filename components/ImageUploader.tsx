@@ -49,7 +49,7 @@ export default function ImageUploader() {
 
       {!uploading && (
         <div>
-          <label className={"inline-block btn w-44"}>
+          <button className={"btn w-48"}>
             📸 Upload Img
             <input
               className={"hidden"}
@@ -57,7 +57,7 @@ export default function ImageUploader() {
               onChange={uploadFile}
               accept="image/x-png,image/gif,image/jpeg"
             />
-          </label>
+          </button>
         </div>
       )}
 

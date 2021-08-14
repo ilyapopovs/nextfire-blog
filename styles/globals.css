@@ -1,22 +1,68 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+:root,
+.system-theme,
+.light-theme {
+  /* HSL values, not using hsl() to integrate with Tailwind in a way that supports Tailwind's opacity utilities */
+  --color-text-primary: 210, 11%, 4%;
+  --color-text-inverted: 0, 0%, 100%;
+  --color-text-link: 224, 76%, 48%;
+  --color-bg-primary: 0, 0%, 100%;
+  --color-bg-secondary: 200, 10%, 94%;
+  --color-bg-inverted: 210, 11%, 4%;
+  --color-border-primary: 208, 11%, 74%;
+  --color-btn-primary: 235, 72%, 55%;
+  --color-btn-secondary: 208, 11%, 74%;
+  --color-btn-success: 140, 72%, 55%;
+  --color-btn-danger: 0, 72%, 55%;
+}
+
+.dark-theme {
+  --color-text-primary: 210, 11%, 90%;
+  --color-text-inverted: 210, 11%, 4%;
+  --color-text-link: 224, 76%, 68%;
+  --color-bg-primary: 210, 11%, 20%;
+  --color-bg-secondary: 210, 11%, 10%;
+  --color-bg-inverted: 0, 0%, 100%;
+  --color-border-primary: 0, 0%, 0%;
+  --color-btn-primary: 235, 72%, 75%;
+  --color-btn-secondary: 208, 11%, 30%;
+  --color-btn-success: 140, 72%, 55%;
+  --color-btn-danger: 0, 72%, 65%;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* copy of .dark-theme */
+  .system-theme {
+    --color-text-primary: 210, 11%, 90%;
+    --color-text-inverted: 210, 11%, 4%;
+    --color-text-link: 224, 76%, 68%;
+    --color-bg-primary: 210, 11%, 20%;
+    --color-bg-secondary: 210, 11%, 10%;
+    --color-bg-inverted: 0, 0%, 100%;
+    --color-border-primary: 0, 0%, 0%;
+    --color-btn-primary: 235, 72%, 75%;
+    --color-btn-secondary: 208, 11%, 30%;
+    --color-btn-success: 140, 72%, 55%;
+    --color-btn-danger: 0, 72%, 65%;
+  }
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Apply styles after components layer - so that utilities layer styles can overwrite what's here */
 @layer components {
-  :root {
-    --color-bg: #eef0f1;
-    --color-text: #08090a;
-    --color-blue: #3b49df;
-    --color-red: #df3b3b;
-    --color-green: #3bdf72;
-    --color-gray: #b5bdc4;
-  }
-
   html,
   body {
-    @apply font-noto bg-custom-gray-light;
+    @apply font-noto;
+  }
+
+  #theme-container {
+    @apply text-theme-primary bg-theme-secondary;
+    min-height: 100vh;
   }
 
   nav > div {
@@ -31,23 +77,32 @@
   }
 
   .btn {
-    @apply flex justify-center items-center text-center font-noto text-xl font-bold text-gray-900 bg-custom-gray py-2 px-4 m-2 mr-4 ml-0 rounded cursor-pointer;
+    @apply flex justify-center items-center text-center text-xl font-bold text-theme-primary bg-theme-btn-secondary py-2 px-4 m-2 mr-4 ml-0 rounded ring-offset-2 ring-offset-theme-primary ring-theme-secondary cursor-pointer;
   }
 
-  .btn-blue {
-    @apply text-white bg-blue-700;
+  .btn:hover {
+    filter: brightness(90%);
   }
 
-  .btn-green {
-    @apply text-white bg-green-600;
+  .btn:disabled,
+  .btn[disabled] {
+    cursor: not-allowed;
   }
 
-  .btn-red {
-    @apply text-white bg-red-700;
+  .btn-primary {
+    @apply text-theme-inverted bg-theme-btn-primary ring-theme-primary;
+  }
+
+  .btn-success {
+    @apply text-theme-inverted bg-theme-btn-success ring-theme-success;
+  }
+
+  .btn-danger {
+    @apply text-theme-inverted bg-theme-btn-danger ring-theme-danger;
   }
 
   .input {
-    @apply py-2 px-3 text-2xl bg-white border border-custom-gray rounded-lg;
+    @apply py-2 px-3 text-2xl bg-theme-primary border border-theme-primary rounded-lg;
   }
 
   .label {
@@ -55,13 +110,12 @@
   }
 
   .card {
-    @apply p-8 my-4 mx-0 bg-white border border-custom-gray rounded-lg;
+    @apply p-8 my-4 mx-0 bg-theme-primary border border-theme-primary rounded-lg;
   }
 
-  /* Loader */
   .loader {
-    @apply border-8 border-custom-gray-light rounded-full w-12 h-12;
-    border-top: 8px solid var(--color-blue);
+    @apply border-8 border-theme-primary rounded-full w-12 h-12;
+    border-top: 8px solid hsl(var(--color-btn-primary));
     animation: spin 2s linear infinite;
   }
 
@@ -76,12 +130,7 @@
 }
 
 @layer utilities {
-  .btn:hover {
-    filter: brightness(90%);
-  }
-
-  .btn:disabled,
-  .btn[disabled] {
-    cursor: not-allowed;
+  .btn {
+    @apply focus:ring-2;
   }
 }

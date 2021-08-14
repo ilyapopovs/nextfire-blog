@@ -49,12 +49,14 @@ function PostManager() {
           </section>
 
           <aside className={"w-full flex flex-col"} style={{ maxWidth: "25%" }}>
-            <h3 className={'text-lg font-bold'}>Tools</h3>
-            <button className={'btn'} onClick={() => setPreview(!preview)}>
+            <h3 className={"text-lg font-bold"}>Tools</h3>
+            <button className={"btn"} onClick={() => setPreview(!preview)}>
               {preview ? "Edit" : "Preview"}
             </button>
-            <Link href={`/${post.username}/${post.slug}`}>
-              <button className={"btn btn-blue"}>Live view</button>
+            <Link href={`/${post.username}/${post.slug}`} passHref>
+              <a className={"btn btn-primary"} target={"_blank"}>
+                Live view
+              </a>
             </Link>
             <DeletePostButton postRef={postRef} />
           </aside>
@@ -98,7 +100,7 @@ function PostForm({ defaultValues, postRef, preview }) {
         </div>
 
         <textarea
-          className={"input w-full"}
+          className={"input w-full h-80"}
           name="content"
           ref={register({
             maxLength: { value: 20000, message: "content is too long" },
@@ -123,7 +125,7 @@ function PostForm({ defaultValues, postRef, preview }) {
 
         <button
           type="submit"
-          className={"btn btn-green"}
+          className={"btn btn-success"}
           disabled={!isDirty || !isValid}
         >
           Save Changes
@@ -145,7 +147,7 @@ function DeletePostButton({ postRef }) {
   };
 
   return (
-    <button className={"btn btn-red"} onClick={deletePost}>
+    <button className={"btn btn-danger"} onClick={deletePost}>
       Delete
     </button>
   );

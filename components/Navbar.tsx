@@ -1,7 +1,29 @@
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../lib/context";
 import { SignOutButton } from "../pages/enter";
+
+const THEME_CONTAINER_ID = "theme-container";
+
+const THEME_SYSTEM = "system-theme";
+const THEME_LIGHT = "light-theme";
+const THEME_DARK = "dark-theme";
+
+const THEME_ICON_SYSTEM = "brightness_auto";
+const THEME_ICON_LIGHT = "light_mode";
+const THEME_ICON_DARK = "dark_mode";
+
+const THEME_SEQUENCE = {
+  [THEME_SYSTEM]: THEME_LIGHT,
+  [THEME_LIGHT]: THEME_DARK,
+  [THEME_DARK]: THEME_SYSTEM,
+};
+
+const THEME_ICONS_SEQUENCE = {
+  [THEME_SYSTEM]: THEME_ICON_LIGHT,
+  [THEME_LIGHT]: THEME_ICON_DARK,
+  [THEME_DARK]: THEME_ICON_SYSTEM,
+};
 
 export default function Navbar() {
   const { user, username } = useContext(UserContext);
@@ -9,7 +31,7 @@ export default function Navbar() {
   return (
     <nav
       className={
-        "w-full h-16 sticky top-0 z-50 bg-white font-bold border-b border-gray-300"
+        "w-full h-16 sm:sticky top-0 z-50 bg-theme-primary font-bold border-b border-theme-primary"
       }
     >
       <div className={"mx-auto"}>
@@ -29,8 +51,11 @@ export default function Navbar() {
                 </li>
                 <li>
                   <Link href="/admin">
-                    <button className={"btn btn-blue"}>Write Posts</button>
+                    <button className={"btn btn-primary"}>Write Posts</button>
                   </Link>
+                </li>
+                <li>
+                  <SwitchThemeButton />
                 </li>
                 <li>
                   <Link href={`/${username}`}>
@@ -52,8 +77,11 @@ export default function Navbar() {
               </li>
               <li>
                 <Link href="/enter" passHref>
-                  <button className={"btn btn-blue"}>Log in</button>
+                  <button className={"btn btn-primary"}>Log in</button>
                 </Link>
+              </li>
+              <li>
+                <SwitchThemeButton />
               </li>
             </>
           )}
@@ -62,13 +90,37 @@ export default function Navbar() {
             <>
               <li>
                 <Link href="/enter" passHref>
-                  <button className={"btn btn-blue mr-0"}>Log in</button>
+                  <button className={"btn btn-primary"}>Log in</button>
                 </Link>
+              </li>
+              <li>
+                <SwitchThemeButton />
               </li>
             </>
           )}
         </ul>
       </div>
     </nav>
+  );
+}
+
+function SwitchThemeButton() {
+  const [iconClass, setIconClass] = useState(THEME_ICON_LIGHT);
+
+  function switchTheme() {
+    const container = document.getElementById(THEME_CONTAINER_ID);
+    const currentTheme = container.className;
+    const newTheme = THEME_SEQUENCE[currentTheme] ?? THEME_SYSTEM;
+    container.className = newTheme;
+    setIconClass(THEME_ICONS_SEQUENCE[newTheme] ?? THEME_ICONS_SEQUENCE[THEME_LIGHT]);
+  }
+
+  return (
+    <button
+      className={"btn bg-transparent border-theme-primary"}
+      onClick={switchTheme}
+    >
+      <span className={'material-icons'}>{iconClass}</span>
+    </button>
   );
 }

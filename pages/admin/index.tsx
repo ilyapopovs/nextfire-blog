@@ -95,7 +95,7 @@ function CreateNewPost() {
       <p>
         <span className={"label mb-3"}>Slug:</span> {slug}
       </p>
-      <button type="submit" disabled={!isValid} className={"btn btn-green"}>
+      <button type="submit" disabled={!isValid} className={"btn btn-success"}>
         Create New Post
       </button>
     </form>
