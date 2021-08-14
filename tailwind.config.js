@@ -50,7 +50,7 @@ module.exports = {
       ringOffsetColor: {
         theme: {
           primary: withOpacity("--color-bg-primary"),
-        }
+        },
       },
       fontFamily: {
         noto: '"Noto Sans", sans-serif',
@@ -60,6 +60,7 @@ module.exports = {
   variants: {
     extend: {
       backgroundColor: ["active"],
+      transitionProperty: ["motion-reduce"],
     },
   },
   plugins: [],
