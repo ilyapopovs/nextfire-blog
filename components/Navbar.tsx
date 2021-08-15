@@ -105,14 +105,17 @@ export default function Navbar() {
 }
 
 function SwitchThemeButton() {
-  const [iconClass, setIconClass] = useState(THEME_ICON_LIGHT);
+  const [iconName, setIconName] = useState(THEME_ICONS_SEQUENCE[THEME_SYSTEM]);
 
   function switchTheme() {
     const container = document.getElementById(THEME_CONTAINER_ID);
     const currentTheme = container.className;
     const newTheme = THEME_SEQUENCE[currentTheme] ?? THEME_SYSTEM;
+
     container.className = newTheme;
-    setIconClass(THEME_ICONS_SEQUENCE[newTheme] ?? THEME_ICONS_SEQUENCE[THEME_LIGHT]);
+    setIconName(
+      THEME_ICONS_SEQUENCE[newTheme] ?? THEME_ICONS_SEQUENCE[THEME_SYSTEM]
+    );
   }
 
   return (
@@ -120,7 +123,7 @@ function SwitchThemeButton() {
       className={"btn bg-transparent border-theme-primary"}
       onClick={switchTheme}
     >
-      <span className={'material-icons'}>{iconClass}</span>
+      <span className={"material-icons"}>{iconName}</span>
     </button>
   );
 }
