@@ -50,7 +50,7 @@ export default function Home(props) {
   };
 
   return (
-    <main className={'container mx-auto'}>
+    <main className={"container"}>
       <MetaTags />
       <PostFeed posts={posts} />
 
@@ -60,7 +60,9 @@ export default function Home(props) {
         </button>
       )}
 
-      <Loader show={loading} />
+      <div className={"flex sm:block justify-center"}>
+        <Loader show={loading} />
+      </div>
 
       {postsEnd && "You have reached the end!"}
     </main>

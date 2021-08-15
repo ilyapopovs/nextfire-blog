@@ -14,7 +14,7 @@
   --color-border-primary: 208, 11%, 74%;
   --color-btn-primary: 235, 72%, 55%;
   --color-btn-secondary: 208, 11%, 74%;
-  --color-btn-success: 140, 72%, 55%;
+  --color-btn-success: 140, 72%, 45%;
   --color-btn-danger: 0, 72%, 55%;
 }
 
@@ -66,13 +66,8 @@
     transition: background-color ease-in 200ms, color ease-in 200ms;
   }
 
-  .container {
-    max-width: 1680px;
-    padding: 0 10vw;
-  }
-
   .btn {
-    @apply flex justify-center items-center text-center text-xl font-bold text-theme-primary bg-theme-btn-secondary py-2 px-4 m-2 mr-4 ml-0 rounded ring-offset-2 ring-offset-theme-primary ring-theme-secondary cursor-pointer;
+    @apply w-full flex justify-center items-center text-center text-xl font-bold text-theme-primary bg-theme-btn-secondary py-2 px-4 m-2 mr-4 ml-0 rounded ring-offset-2 ring-offset-theme-primary ring-theme-secondary cursor-pointer;
   }
 
   .btn:hover {
@@ -128,7 +123,12 @@
   #theme-container {
     @apply motion-reduce:transition-none;
   }
+
+  .container {
+    @apply max-w-screen-xl mx-auto px-2 sm:px-10;
+  }
+
   .btn {
-    @apply focus:ring-2;
+    @apply focus:ring-2 sm:w-auto;
   }
 }
