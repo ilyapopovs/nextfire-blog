@@ -66,15 +66,9 @@
     transition: background-color ease-in 200ms, color ease-in 200ms;
   }
 
-  nav > div {
+  .container {
     max-width: 1680px;
     padding: 0 10vw;
-  }
-
-  main {
-    padding: 1rem 10vw;
-    max-width: 1680px;
-    margin: 0 auto;
   }
 
   .btn {

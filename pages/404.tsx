@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Custom404Page() {
   return (
-    <main className={"flex justify-center"}>
+    <main className={"container mx-auto py-4 flex justify-center"}>
       <div>
         <h1 className={"text-2xl"}>
           404 - That page does not seem to exist...

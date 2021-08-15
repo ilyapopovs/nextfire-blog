@@ -53,7 +53,7 @@ export default function Post(props) {
   const post = realtimePost || props.post;
 
   return (
-    <main className={"flex justify-between"}>
+    <main className={"container mx-auto py-4 flex justify-between"}>
       <section className={"pr-8"} style={{ flex: 3 }}>
         <PostContent post={post} />
       </section>

@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 
 export default function AdminPostsPage(props) {
   return (
-    <main>
+    <main className={'container mx-auto'}>
       <AuthCheck>
         <PostList />
         <CreateNewPost />

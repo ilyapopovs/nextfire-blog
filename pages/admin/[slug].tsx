@@ -34,7 +34,7 @@ function PostManager() {
   const [post]: [any, boolean, Error] = useDocumentDataOnce(postRef);
 
   return (
-    <main>
+    <main className={'container mx-auto py-4'}>
       {post && (
         <div className={"flex justify-between"}>
           <section className={"w-full"} style={{ maxWidth: "70%" }}>

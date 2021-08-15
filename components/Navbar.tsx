@@ -34,7 +34,7 @@ export default function Navbar() {
         "w-full h-16 sm:sticky top-0 z-50 bg-theme-primary font-bold border-b border-theme-primary"
       }
     >
-      <div className={"mx-auto"}>
+      <div className={"container mx-auto"}>
         <ul className={"flex justify-center items-center h-full"}>
           <li className={"mr-auto"}>
             <Link href="/" passHref>

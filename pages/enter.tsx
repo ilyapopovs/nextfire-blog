@@ -10,7 +10,7 @@ export default function EnterPage(props) {
   // 2. user signed in, but missing username <UsernameForm />
   // 3. user signed in, has username <SignOutButton />
   return (
-    <main className={"flex justify-center"}>
+    <main className={"container mx-auto py-4 flex justify-center"}>
       {user ? (
         !username ? (
           <UsernameForm />

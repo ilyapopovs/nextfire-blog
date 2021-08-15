@@ -33,7 +33,7 @@ export async function getServerSideProps({ query }) {
 
 export default function UserProfilePage({ user, posts }) {
   return (
-    <main>
+    <main className={'container mx-auto'}>
       <UserProfile user={user} />
       <PostFeed posts={posts} />
     </main>

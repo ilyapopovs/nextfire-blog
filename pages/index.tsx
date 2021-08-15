@@ -50,7 +50,7 @@ export default function Home(props) {
   };
 
   return (
-    <main>
+    <main className={'container mx-auto'}>
       <MetaTags />
       <PostFeed posts={posts} />
 
