@@ -140,7 +140,20 @@
     @apply max-w-screen-xl mx-auto px-2 sm:px-10;
   }
 
+  main {
+    @apply py-10;
+  }
+
   .btn {
+    tab-index: 0;
     @apply focus:ring-2 sm:w-auto;
+  }
+
+  .theme-switcher {
+    @apply focus:ring-0;
+  }
+
+  .theme-switcher:focus {
+    box-shadow: none;
   }
 }

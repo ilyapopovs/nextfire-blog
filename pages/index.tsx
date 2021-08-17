@@ -50,7 +50,7 @@ export default function Home(props) {
   };
 
   return (
-    <main className={"container"}>
+    <main className={"container -mt-6"}>
       <MetaTags />
       <PostFeed posts={posts} />
 

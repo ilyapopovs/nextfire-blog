@@ -9,7 +9,7 @@ export default function PostContent({ post }) {
       : post.createdAt.toDate();
 
   return (
-    <div className={"card my-6"}>
+    <div className={"card my-0"}>
       <h1 className={"text-2xl font-bold mb-1"}>{post?.title}</h1>
       <span className={"text-sm"}>
         Written by{" "}

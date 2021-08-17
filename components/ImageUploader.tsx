@@ -43,13 +43,20 @@ export default function ImageUploader() {
   };
 
   return (
-    <div className={"flex justify-between"}>
-      <Loader show={uploading} />
-      {uploading && <h3>{progress}%</h3>}
+    <div className={"flex flex-col sm:flex-row"}>
+      {uploading && (
+        <div className={"flex items-center"}>
+          <Loader show={uploading} />
+          <h3 className={"ml-4"}>{progress}%</h3>
+        </div>
+      )}
 
       {!uploading && (
-        <div>
-          <button className={"btn w-48"}>
+        <div
+          className={"w-full sm:w-52 mr-4 mb-4 sm:mb-0"}
+          style={{ minWidth: "208px" }}
+        >
+          <label className={"btn w-full m-0"}>
             📸 Upload Img
             <input
               className={"hidden"}
@@ -57,14 +64,16 @@ export default function ImageUploader() {
               onChange={uploadFile}
               accept="image/x-png,image/gif,image/jpeg"
             />
-          </button>
+          </label>
         </div>
       )}
 
       {downloadURL && (
         <code
-          className={"h-11 ml-auto my-2 bg-white p-1 my-1 rounded text-xs overflow-x-scroll"}
-          style={{overflowWrap: 'break-word'}}
+          className={
+            "w-full h-20 sm:h-11 bg-theme-primary p-1 rounded text-xs overflow-x-scroll"
+          }
+          style={{ overflowWrap: "break-word" }}
         >
           {`![alt](${downloadURL})`}
         </code>
