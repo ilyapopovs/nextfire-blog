@@ -34,10 +34,10 @@ function PostManager() {
   const [post]: [any, boolean, Error] = useDocumentDataOnce(postRef);
 
   return (
-    <main>
+    <main className={"container"}>
       {post && (
-        <div className={"flex justify-between"}>
-          <section className={"w-full"} style={{ maxWidth: "70%" }}>
+        <div className={"flex flex-col-reverse lg:flex-row justify-between"}>
+          <section className={"w-full lg:mr-10"}>
             <h1 className={"text-2xl font-bold"}>{post.title}</h1>
             <p>ID: {post.slug}</p>
 
@@ -48,15 +48,25 @@ function PostManager() {
             />
           </section>
 
-          <aside className={"w-full flex flex-col"} style={{ maxWidth: "25%" }}>
-            <h3 className={'text-lg font-bold'}>Tools</h3>
-            <button className={'btn'} onClick={() => setPreview(!preview)}>
-              {preview ? "Edit" : "Preview"}
-            </button>
-            <Link href={`/${post.username}/${post.slug}`}>
-              <button className={"btn btn-blue"}>Live view</button>
-            </Link>
-            <DeletePostButton postRef={postRef} />
+          <aside className={'mb-10 lg:mb-0'}>
+            <div className={"card"}>
+              <h3 className={"text-xl font-bold"}>Tools</h3>
+              <div
+                className={
+                  "flex flex-col sm:flex-row lg:flex-col lg:w-72 sm:-mr-4"
+                }
+              >
+                <button className={"btn"} onClick={() => setPreview(!preview)}>
+                  {preview ? "Edit" : "Preview"}
+                </button>
+                <Link href={`/${post.username}/${post.slug}`} passHref>
+                  <a className={"btn btn-primary"} target={"_blank"}>
+                    Live view
+                  </a>
+                </Link>
+                <DeletePostButton postRef={postRef} />
+              </div>
+            </div>
           </aside>
         </div>
       )}
@@ -93,12 +103,12 @@ function PostForm({ defaultValues, postRef, preview }) {
       )}
 
       <div className={preview ? "hidden" : ""}>
-        <div className={"py-2"}>
+        <div className={"my-4"}>
           <ImageUploader />
         </div>
 
         <textarea
-          className={"input w-full"}
+          className={"input w-full h-80"}
           name="content"
           ref={register({
             maxLength: { value: 20000, message: "content is too long" },
@@ -123,7 +133,7 @@ function PostForm({ defaultValues, postRef, preview }) {
 
         <button
           type="submit"
-          className={"btn btn-green"}
+          className={"btn btn-success"}
           disabled={!isDirty || !isValid}
         >
           Save Changes
@@ -145,7 +155,7 @@ function DeletePostButton({ postRef }) {
   };
 
   return (
-    <button className={"btn btn-red"} onClick={deletePost}>
+    <button className={"btn btn-danger"} onClick={deletePost}>
       Delete
     </button>
   );

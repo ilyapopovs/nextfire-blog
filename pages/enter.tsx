@@ -1,16 +1,14 @@
 import { auth, firestore, googleAuthProvider } from "../lib/firebase";
 import { UserContext } from "../lib/context";
 import { useEffect, useState, useCallback, useContext } from "react";
+import Link from "next/link";
 import debounce from "lodash.debounce";
 
-export default function EnterPage(props) {
+export default function EnterPage() {
   const { user, username } = useContext(UserContext);
 
-  // 1. user signed out <SignInButton />
-  // 2. user signed in, but missing username <UsernameForm />
-  // 3. user signed in, has username <SignOutButton />
   return (
-    <main className={"flex justify-center"}>
+    <main className={"container py-4 flex justify-center"}>
       {user ? (
         !username ? (
           <UsernameForm />
@@ -31,8 +29,8 @@ function SignInButton() {
   };
 
   return (
-    <button className={"btn bg-white"} onClick={signInWithGoogle}>
-      <img src={"/google-logo.png"} width="30px" className={"mr-2"} />
+    <button className={"btn mr-0"} onClick={signInWithGoogle}>
+      <img src={"/google-logo.png"} width="30px" className={'mr-4'}/>
       Sign in with Google
     </button>
   );
@@ -41,9 +39,11 @@ function SignInButton() {
 // Sign out button
 export function SignOutButton() {
   return (
-    <button className={"btn"} onClick={() => auth.signOut()}>
-      Sign Out
-    </button>
+    <Link href={"/"} passHref>
+      <a className={"btn"} onClick={() => auth.signOut()}>
+        Sign Out
+      </a>
+    </Link>
   );
 }
 
@@ -132,7 +132,7 @@ function UsernameForm() {
           <div className={"inline-block mb-2"}>
             <button
               type="submit"
-              className={"btn btn-green"}
+              className={"btn btn-success"}
               disabled={!isValid}
             >
               Choose

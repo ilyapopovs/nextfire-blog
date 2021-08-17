@@ -53,20 +53,20 @@ export default function Post(props) {
   const post = realtimePost || props.post;
 
   return (
-    <main className={"flex justify-between"}>
-      <section className={"pr-8"} style={{ flex: 3 }}>
+    <main className={"container flex flex-col lg:flex-row justify-between"}>
+      <section className={"mb-10 lg:mb-0 lg:pr-10"} style={{ flex: 3 }}>
         <PostContent post={post} />
       </section>
 
       <div style={{ flex: 1 }}>
-        <aside className={"card sticky top-24"} >
+        <aside className={"card sticky my-0"} >
           <p className={"font-bold mb-6"}>
             Hearts: {post.heartCount || 0} ❤️
           </p>
           <AuthCheck
             fallback={
               <Link href="/enter" passHref>
-                <button className={"btn btn-green my-0"}>❤️ Sign Up</button>
+                <button className={"btn btn-success my-0"}>❤️ Sign Up</button>
               </Link>
             }
           >
