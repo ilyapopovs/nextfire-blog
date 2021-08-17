@@ -124,6 +124,18 @@
     @apply motion-reduce:transition-none;
   }
 
+  #navbar-dropdown {
+    transform: translateY(calc(-100% + 1px));
+    z-index: 0;
+    transition: 200ms ease;
+    @apply border-theme-primary border-b rounded-b-none motion-reduce:transition-none;
+  }
+
+  #navbar-dropdown.dropdown-shown {
+    transform: translateY(0%);
+    @apply rounded-b-2xl;
+  }
+
   .container {
     @apply max-w-screen-xl mx-auto px-2 sm:px-10;
   }

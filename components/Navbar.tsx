@@ -30,12 +30,9 @@ export default function Navbar() {
   const [isDropdownShown, setIsDropdownShown] = useState(false);
 
   return (
-    <nav
-      className={
-        "w-full h-16 mb-6 sm:sticky top-0 z-50 bg-theme-primary font-bold border-b border-theme-primary"
-      }
-    >
-      <div className={"container"}>
+    <nav className={"w-full h-16 sm:sticky top-0 font-bold"}>
+      <div className={"w-full h-16 bg-theme-primary absolute top-0 z-40"} />
+      <div className={"h-16 container relative z-40 bg-theme-primary"}>
         <ul className={"flex justify-center items-center h-full"}>
           <li className={"mr-auto"}>
             <Link href="/" passHref>
@@ -67,8 +64,8 @@ export default function Navbar() {
       <div
         id="navbar-dropdown"
         className={
-          (isDropdownShown ? "block" : "hidden") +
-          " relative py-4 bg-theme-primary border-b border-theme-primary rounded-b-2xl"
+          (isDropdownShown ? "dropdown-shown " : "") +
+          "relative z-30 py-4 bg-theme-primary border-b border-theme-primary rounded-b-2xl"
         }
       >
         <div className={"container"}>
@@ -137,7 +134,7 @@ function SwitchThemeButton() {
 
   return (
     <button
-      className={"btn w-auto bg-transparent border-theme-primary"}
+      className={"btn theme-switcher w-auto bg-transparent visible"}
       onClick={switchTheme}
     >
       <span className={"material-icons"}>{iconName}</span>
