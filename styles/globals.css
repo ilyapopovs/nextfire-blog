@@ -62,8 +62,12 @@
 
   #theme-container {
     @apply text-theme-primary bg-theme-secondary;
-    min-height: 100vh;
+    min-height: calc(100vh - 4rem);
     transition: background-color ease-in 200ms, color ease-in 200ms;
+  }
+
+  svg.logo:hover {
+    filter: brightness(90%);
   }
 
   .btn {

@@ -3,8 +3,6 @@ import { useContext, useState } from "react";
 import { UserContext } from "../lib/context";
 import { SignOutButton } from "../pages/enter";
 
-const THEME_CONTAINER_ID = "theme-container";
-
 const THEME_SYSTEM = "system-theme";
 const THEME_LIGHT = "light-theme";
 const THEME_DARK = "dark-theme";
@@ -25,7 +23,9 @@ const THEME_ICONS_SEQUENCE = {
   [THEME_DARK]: THEME_ICON_SYSTEM,
 };
 
-export default function Navbar() {
+export const DEFAULT_THEME = THEME_SYSTEM;
+
+export default function Navbar({ themeClass, setThemeClass }) {
   const { user, username } = useContext(UserContext);
   const [isDropdownShown, setIsDropdownShown] = useState(false);
 
@@ -43,7 +43,10 @@ export default function Navbar() {
           </li>
 
           <li>
-            <SwitchThemeButton />
+            <SwitchThemeButton
+              themeClass={themeClass}
+              setThemeClass={setThemeClass}
+            />
           </li>
           <li>
             {user ? (
@@ -118,17 +121,15 @@ export default function Navbar() {
   );
 }
 
-function SwitchThemeButton() {
-  const [iconName, setIconName] = useState(THEME_ICONS_SEQUENCE[THEME_SYSTEM]);
+function SwitchThemeButton({ themeClass, setThemeClass }) {
+  const [iconName, setIconName] = useState(THEME_ICONS_SEQUENCE[DEFAULT_THEME]);
 
   function switchTheme() {
-    const container = document.getElementById(THEME_CONTAINER_ID);
-    const currentTheme = container.className;
-    const newTheme = THEME_SEQUENCE[currentTheme] ?? THEME_SYSTEM;
+    const newTheme = THEME_SEQUENCE[themeClass] ?? DEFAULT_THEME;
 
-    container.className = newTheme;
+    setThemeClass(newTheme);
     setIconName(
-      THEME_ICONS_SEQUENCE[newTheme] ?? THEME_ICONS_SEQUENCE[THEME_SYSTEM]
+      THEME_ICONS_SEQUENCE[newTheme] ?? THEME_ICONS_SEQUENCE[DEFAULT_THEME]
     );
   }
 
