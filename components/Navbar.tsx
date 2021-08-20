@@ -30,7 +30,7 @@ export default function Navbar({ themeClass, setThemeClass }) {
   const [isDropdownShown, setIsDropdownShown] = useState(false);
 
   return (
-    <nav className={"w-full h-16 sm:sticky top-0 font-bold"}>
+    <nav className={"w-full h-16 sm:sticky z-50 top-0 font-bold"}>
       <div className={"w-full h-16 bg-theme-primary absolute top-0 z-40"} />
       <div className={"h-16 container relative z-40 bg-theme-primary"}>
         <ul className={"flex justify-center items-center h-full"}>

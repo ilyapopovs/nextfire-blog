@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
+import MetaTags from "../components/MetaTags";
 import { DEFAULT_THEME } from "../components/Navbar";
 import { Toaster } from "react-hot-toast";
 import { UserContext } from "../lib/context";
@@ -12,14 +13,17 @@ function MyApp({ Component, pageProps }) {
   const [themeClass, setThemeClass] = useState(DEFAULT_THEME);
 
   return (
-    <UserContext.Provider value={userData}>
-      <div id={"theme-container"} className={themeClass}>
-        <Navbar themeClass={themeClass} setThemeClass={setThemeClass} />
-        <Component {...pageProps} />
-        <Toaster />
-      </div>
-      <Footer themeClass={themeClass} />
-    </UserContext.Provider>
+    <>
+      <MetaTags />
+      <UserContext.Provider value={userData}>
+        <div id={"main-container"} className={`theme-container ${themeClass}`}>
+          <Navbar themeClass={themeClass} setThemeClass={setThemeClass} />
+          <Component {...pageProps} />
+          <Toaster />
+        </div>
+        <Footer themeClass={themeClass} />
+      </UserContext.Provider>
+    </>
   );
 }
 

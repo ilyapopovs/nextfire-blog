@@ -60,10 +60,15 @@
     @apply font-noto;
   }
 
-  #theme-container {
-    @apply text-theme-primary bg-theme-secondary;
+  #main-container {
     min-height: calc(100vh - 4rem);
-    transition: background-color ease-in 200ms, color ease-in 200ms;
+  }
+
+  .theme-container {
+    @apply text-theme-primary bg-theme-secondary;
+    transition: background-color ease-in 200ms, color ease-in 200ms,
+      border-top-color ease-in 200ms, border-right-color ease-in 200ms,
+      border-bottom-color ease-in 200ms, border-left-color ease-in 200ms;
   }
 
   svg.logo:hover {

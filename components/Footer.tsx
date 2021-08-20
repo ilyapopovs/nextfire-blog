@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Footer({ themeClass }) {
   return (
     <footer
-      className={`${themeClass} relative w-full h-24 sm:h-16 bg-theme-primary border-t border-theme-primary`}
+      className={`theme-container ${themeClass} relative w-full h-24 sm:h-16 bg-theme-primary border-t border-theme-primary`}
     >
       <div
         className={
@@ -13,13 +13,13 @@ export default function Footer({ themeClass }) {
         <p className={"font-sans font-extralight text-sm"}>
           Made with React + Next.js + Firebase
         </p>
-        <div className={'hidden sm:block text-theme-primary mx-8'}>|</div>
-        <div className={'pt-2 sm:pt-0'}>
+        <div className={"hidden sm:block text-theme-primary mx-6"}>|</div>
+        <div className={"pt-2 sm:pt-0"}>
           <Link href={"https://github.com/ilyapopovs/nextfire-blog"} passHref>
             <a target={"_blank"} className={"mr-4"}>
               <svg
                 className={"inline logo"}
-                fill={'hsl(var(--color-text-primary))'}
+                fill={"hsl(var(--color-text-primary))"}
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -33,7 +33,7 @@ export default function Footer({ themeClass }) {
             <a target={"_blank"}>
               <svg
                 className={"inline logo"}
-                fill={'hsl(var(--color-text-primary))'}
+                fill={"hsl(var(--color-text-primary))"}
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
