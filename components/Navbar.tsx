@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useContext, useState } from "react";
-import { UserContext } from "../lib/context";
-import { SignOutButton } from "../pages/enter";
+import { UserContext } from "lib/context";
+import { SignOutButton } from "pages/enter";
 
 const THEME_SYSTEM = "system-theme";
 const THEME_LIGHT = "light-theme";

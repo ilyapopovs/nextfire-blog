@@ -1,5 +1,5 @@
-import { auth, firestore, googleAuthProvider } from "../lib/firebase";
-import { UserContext } from "../lib/context";
+import { auth, firestore, googleAuthProvider } from "lib/firebase";
+import { UserContext } from "lib/context";
 import { useEffect, useState, useCallback, useContext } from "react";
 import Link from "next/link";
 import debounce from "lodash.debounce";

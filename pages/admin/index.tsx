@@ -1,7 +1,7 @@
-import AuthCheck from "../../components/AuthCheck";
-import PostFeed from "../../components/PostFeed";
-import { UserContext } from "../../lib/context";
-import { firestore, auth, serverTimestamp } from "../../lib/firebase";
+import AuthCheck from "components/AuthCheck";
+import PostFeed from "components/PostFeed";
+import { UserContext } from "lib/context";
+import { firestore, auth, serverTimestamp } from "lib/firebase";
 
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";

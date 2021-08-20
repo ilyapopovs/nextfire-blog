@@ -1,8 +1,8 @@
-import PostContent from "../../components/PostContent";
-import { firestore, getUserWithUsername, postToJSON } from "../../lib/firebase";
+import PostContent from "components/PostContent";
+import { firestore, getUserWithUsername, postToJSON } from "lib/firebase";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import AuthCheck from "../../components/AuthCheck";
-import HeartButton from "../../components/HeartButton";
+import AuthCheck from "components/AuthCheck";
+import HeartButton from "components/HeartButton";
 import Link from "next/link";
 
 export async function getStaticProps({ params }) {

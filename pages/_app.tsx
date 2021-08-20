@@ -1,11 +1,11 @@
-import "../styles/globals.css";
-import Navbar from "../components/Navbar";
-import MetaTags from "../components/MetaTags";
-import { DEFAULT_THEME } from "../components/Navbar";
+import "styles/globals.css";
+import Navbar from "components/Navbar";
+import MetaTags from "components/MetaTags";
+import { DEFAULT_THEME } from "components/Navbar";
 import { Toaster } from "react-hot-toast";
-import { UserContext } from "../lib/context";
-import { useUserData } from "../lib/hooks";
-import Footer from "../components/Footer";
+import { UserContext } from "lib/context";
+import { useUserData } from "lib/hooks";
+import Footer from "components/Footer";
 import { useState } from "react";
 
 function MyApp({ Component, pageProps }) {
