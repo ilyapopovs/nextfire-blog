@@ -1,15 +1,22 @@
 import Link from "next/link";
+import { PostInterface } from "structures/postModel";
 
-export default function PostFeed({ posts, admin = false }) {
+export default function PostsFeed({ posts, isAdmin = false }) {
   return posts
     ? posts.map((post) => (
-        <PostItem post={post} key={post.slug} admin={admin} />
+        <PostPreview post={post} key={post.slug} isAdmin={isAdmin} />
       ))
     : null;
 }
 
-function PostItem({ post, admin = false }) {
-  // Naive method to calc word count and read time
+function PostPreview({
+  post,
+  isAdmin = false,
+}: {
+  post: PostInterface;
+  isAdmin: boolean;
+}) {
+  // Rough estimates
   const wordCount = post?.content.trim().split(/\s+/g).length;
   const minutesToRead = (wordCount / 100 + 1).toFixed(0);
 
@@ -36,21 +43,24 @@ function PostItem({ post, admin = false }) {
         </span>
       </footer>
 
-      {/* If admin view, show extra controls for user */}
-      {admin && (
-        <div className={"flex justify-between items-center"}>
-          <Link href={`/admin/${post.slug}`}>
-            <h3>
-              <button className={"btn btn-primary w-20"}>Edit</button>
-            </h3>
-          </Link>
+      {isAdmin && <AdminControls post={post} />}
+    </div>
+  );
+}
 
-          {post.published ? (
-            <p className={"text-green-600 font-bold"}>Live 🚀</p>
-          ) : (
-            <p className={"text-blue-600 font-bold"}>Unpublished 🔏</p>
-          )}
-        </div>
+function AdminControls({ post }: { post: PostInterface }) {
+  return (
+    <div className={"flex justify-between items-center"}>
+      <Link href={`/admin/${post.slug}`}>
+        <h3>
+          <button className={"btn btn-primary w-20"}>Edit</button>
+        </h3>
+      </Link>
+
+      {post.isPublished ? (
+        <p className={"text-green-600 font-bold"}>Live 🚀</p>
+      ) : (
+        <p className={"text-blue-600 font-bold"}>Unpublished 🔏</p>
       )}
     </div>
   );

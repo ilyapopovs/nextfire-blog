@@ -1,18 +1,17 @@
-import AuthCheck from "components/AuthCheck";
-import PostFeed from "components/PostFeed";
-import { UserContext } from "lib/context";
-import { firestore, auth, serverTimestamp } from "lib/firebase";
-
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
-
-import { useCollection } from "react-firebase-hooks/firestore";
+import AuthCheck from "components/AuthCheck";
+import PostsFeed from "components/PostsFeed";
+import { UserContext } from "helpers/contextsHelper";
+import { createPost, getAllUserPosts } from "repositories/postsRepository";
+import { getCurrentUserUid } from "services/authService";
+import { PostModel } from "structures/postModel";
 import kebabCase from "lodash.kebabcase";
 import toast from "react-hot-toast";
 
-export default function AdminPostsPage(props) {
+export default function AdminPostsPage() {
   return (
-    <main className={'container'}>
+    <main className={"container"}>
       <AuthCheck>
         <PostList />
         <CreateNewPost />
@@ -22,19 +21,17 @@ export default function AdminPostsPage(props) {
 }
 
 function PostList() {
-  const ref = firestore
-    .collection("users")
-    .doc(auth.currentUser.uid)
-    .collection("posts");
-  const query = ref.orderBy("createdAt");
-  const [querySnapshot] = useCollection(query);
+  async function getPosts() {
+    return await getAllUserPosts();
+  }
 
-  const posts = querySnapshot?.docs.map((doc) => doc.data());
+  const [posts, setPosts] = useState([]);
+  getPosts().then((posts) => setPosts(posts));
 
   return (
     <>
       <h1 className={"text-2xl font-bold"}>Manage your Posts</h1>
-      <PostFeed posts={posts} admin />
+      <PostsFeed posts={posts} isAdmin />
     </>
   );
 }
@@ -43,46 +40,29 @@ function CreateNewPost() {
   const router = useRouter();
   const { username } = useContext(UserContext);
   const [title, setTitle] = useState("");
+  const isTitleValid = title.length > 3 && title.length < 100;
 
   // Ensure slug is URL safe
   const slug = encodeURI(kebabCase(title));
 
-  // Validate length
-  const isValid = title.length > 3 && title.length < 100;
-
-  // Create a new post in firestore
-  const createPost = async (e) => {
+  async function createNewPost(e) {
     e.preventDefault();
-    const uid = auth.currentUser.uid;
-    const ref = firestore
-      .collection("users")
-      .doc(uid)
-      .collection("posts")
-      .doc(slug);
-
-    // Tip: give all fields a default value here
-    const data = {
+    const userUid = getCurrentUserUid();
+    const newPost = new PostModel({
       title,
       slug,
-      uid,
+      userUid,
       username,
-      published: false,
       content: "# hello world!",
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      heartCount: 0,
-    };
+    }).toSerializedPost();
 
-    await ref.set(data);
-
+    await createPost(newPost);
     toast.success("Post created!");
-
-    // Imperative navigation after doc is set
     router.push(`/admin/${slug}`).then();
-  };
+  }
 
   return (
-    <form onSubmit={createPost}>
+    <form onSubmit={createNewPost}>
       <label>
         <span className={"label mb-3"}>Post title</span>
         <input
@@ -95,7 +75,11 @@ function CreateNewPost() {
       <p>
         <span className={"label mb-3"}>Slug:</span> {slug}
       </p>
-      <button type="submit" disabled={!isValid} className={"btn btn-success"}>
+      <button
+        type="submit"
+        disabled={!isTitleValid}
+        className={"btn btn-success"}
+      >
         Create New Post
       </button>
     </form>

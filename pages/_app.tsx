@@ -1,10 +1,10 @@
 import "styles/globals.css";
 import Navbar from "components/Navbar";
 import MetaTags from "components/MetaTags";
-import { DEFAULT_THEME } from "components/Navbar";
+import { DEFAULT_THEME } from "helpers/themeHelper";
 import { Toaster } from "react-hot-toast";
-import { UserContext } from "lib/context";
-import { useUserData } from "lib/hooks";
+import { UserContext } from "helpers/contextsHelper";
+import { useUserData } from "helpers/hooksHelper";
 import Footer from "components/Footer";
 import { useState } from "react";
 

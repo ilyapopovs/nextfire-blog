@@ -1,29 +1,8 @@
 import Link from "next/link";
 import { useContext, useState } from "react";
-import { UserContext } from "lib/context";
-import { SignOutButton } from "pages/enter";
-
-const THEME_SYSTEM = "system-theme";
-const THEME_LIGHT = "light-theme";
-const THEME_DARK = "dark-theme";
-
-const THEME_ICON_SYSTEM = "brightness_auto";
-const THEME_ICON_LIGHT = "light_mode";
-const THEME_ICON_DARK = "dark_mode";
-
-const THEME_SEQUENCE = {
-  [THEME_SYSTEM]: THEME_LIGHT,
-  [THEME_LIGHT]: THEME_DARK,
-  [THEME_DARK]: THEME_SYSTEM,
-};
-
-const THEME_ICONS_SEQUENCE = {
-  [THEME_SYSTEM]: THEME_ICON_LIGHT,
-  [THEME_LIGHT]: THEME_ICON_DARK,
-  [THEME_DARK]: THEME_ICON_SYSTEM,
-};
-
-export const DEFAULT_THEME = THEME_SYSTEM;
+import { UserContext } from "helpers/contextsHelper";
+import { SignOutButton } from "components/SignOutButton";
+import * as Theme from "helpers/themeHelper";
 
 export default function Navbar({ themeClass, setThemeClass }) {
   const { user, username } = useContext(UserContext);
@@ -122,14 +101,17 @@ export default function Navbar({ themeClass, setThemeClass }) {
 }
 
 function SwitchThemeButton({ themeClass, setThemeClass }) {
-  const [iconName, setIconName] = useState(THEME_ICONS_SEQUENCE[DEFAULT_THEME]);
+  const [iconName, setIconName] = useState(
+    Theme.THEME_ICONS_SEQUENCE[Theme.DEFAULT_THEME]
+  );
 
   function switchTheme() {
-    const newTheme = THEME_SEQUENCE[themeClass] ?? DEFAULT_THEME;
+    const newTheme = Theme.THEME_SEQUENCE[themeClass] ?? Theme.DEFAULT_THEME;
 
     setThemeClass(newTheme);
     setIconName(
-      THEME_ICONS_SEQUENCE[newTheme] ?? THEME_ICONS_SEQUENCE[DEFAULT_THEME]
+      Theme.THEME_ICONS_SEQUENCE[newTheme] ??
+        Theme.THEME_ICONS_SEQUENCE[Theme.DEFAULT_THEME]
     );
   }
 

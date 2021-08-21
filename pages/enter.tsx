@@ -1,164 +1,119 @@
-import { auth, firestore, googleAuthProvider } from "lib/firebase";
-import { UserContext } from "lib/context";
 import { useEffect, useState, useCallback, useContext } from "react";
-import Link from "next/link";
+import { isUsernameTaken, saveUsername } from "repositories/usersRepository";
+import { signInWithGoogle } from "services/authService";
+import { UserContext } from "helpers/contextsHelper";
+import { SignOutButton } from "components/SignOutButton";
 import debounce from "lodash.debounce";
 
 export default function EnterPage() {
   const { user, username } = useContext(UserContext);
 
   return (
-    <main className={"container py-4 flex justify-center"}>
+    <main className={"container flex justify-center"}>
       {user ? (
         !username ? (
-          <UsernameForm />
+          <UsernameCreationForm />
         ) : (
           <SignOutButton />
         )
       ) : (
-        <SignInButton />
+        <GoogleSignInButton />
       )}
     </main>
   );
 }
 
-// Sign in with Google button
-function SignInButton() {
-  const signInWithGoogle = async () => {
-    await auth.signInWithPopup(googleAuthProvider);
-  };
-
+function GoogleSignInButton() {
   return (
     <button className={"btn mr-0"} onClick={signInWithGoogle}>
-      <img src={"/google-logo.png"} width="30px" className={'mr-4'}/>
+      <img src={"/google-logo.png"} width="30px" className={"mr-4"} alt="" />
       Sign in with Google
     </button>
   );
 }
 
-// Sign out button
-export function SignOutButton() {
-  return (
-    <Link href={"/"} passHref>
-      <a className={"btn"} onClick={() => auth.signOut()}>
-        Sign Out
-      </a>
-    </Link>
-  );
-}
-
-// Username form
-function UsernameForm() {
+function UsernameCreationForm() {
   const [formValue, setFormValue] = useState("");
   const [isValid, setIsValid] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { user, username } = useContext(UserContext);
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
-    // Create refs for both documents
-    const userDoc = firestore.doc(`users/${user.uid}`);
-    const usernameDoc = firestore.doc(`usernames/${formValue}`);
-
-    // Commit both docs together as a batch write.
-    const batch = firestore.batch();
-    batch.set(userDoc, {
-      username: formValue,
-      photoURL: user.photoURL,
-      displayName: user.displayName,
-    });
-    batch.set(usernameDoc, { uid: user.uid });
-
-    await batch.commit();
-  };
-
-  const onChange = (e) => {
-    // Force form value typed in form to match correct format
-    const val = e.target.value.toLowerCase();
-    const re = /^(?=[a-zA-Z0-9._]{3,15}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
-
-    // Only set form value if length is < 3 OR it passes regex
-    if (val.length < 3) {
-      setFormValue(val);
-      setLoading(false);
-      setIsValid(false);
-    }
-
-    if (re.test(val)) {
-      setFormValue(val);
-      setLoading(true);
-      setIsValid(false);
-    }
-  };
-
-  //
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    checkUsername(formValue);
+    checkIsUsernameTaken(formValue);
   }, [formValue]);
 
-  // Hit the database for username match after each debounced change
   // useCallback is required for debounce to work
-  const checkUsername = useCallback(
+  const checkIsUsernameTaken = useCallback(
     debounce(async (username) => {
-      if (username.length >= 3) {
-        const ref = firestore.doc(`usernames/${username}`);
-        const { exists } = await ref.get();
-        console.log("Firestore read executed!");
-        setIsValid(!exists);
-        setLoading(false);
+      if (username.length > 3) {
+        setIsValid(!(await isUsernameTaken(username)));
+        setIsLoading(false);
       }
     }, 500),
     []
   );
 
+  const onChange = (e) => {
+    const val = e.target.value.toLowerCase();
+    const usernameValidationExpression =
+      /^(?=[a-zA-Z0-9._]{3,15}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+
+    if (val.length < 3) {
+      setFormValue(val);
+      setIsLoading(false);
+      setIsValid(false);
+
+      return;
+    }
+
+    if (usernameValidationExpression.test(val)) {
+      setIsLoading(true);
+      setIsValid(false);
+      setFormValue(val);
+    }
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    await saveUsername(user, formValue);
+  };
+
   return (
-    !username && (
-      <section>
-        <form onSubmit={onSubmit}>
-          <label>
-            <span className={"text-xl font-bold"}>Choose username:</span>
-            <br />
-            <input
-              name="username"
-              className={"input my-2 mr-4 text-xl"}
-              placeholder="johndoe"
-              value={formValue}
-              onChange={onChange}
-            />
-          </label>
-          <div className={"inline-block mb-2"}>
-            <button
-              type="submit"
-              className={"btn btn-success"}
-              disabled={!isValid}
-            >
-              Choose
-            </button>
-          </div>
-          <UsernameMessage
-            username={formValue}
-            isValid={isValid}
-            loading={loading}
+    <section>
+      <form onSubmit={onSubmit}>
+        <label>
+          <span className={"text-xl font-bold"}>Choose username:</span>
+          <br />
+          <input
+            name="username"
+            className={"input my-2 mr-4 text-xl"}
+            placeholder="johndoe"
+            value={formValue}
+            onChange={onChange}
           />
-          {/*<h3>Debug State</h3>*/}
-          {/*<div>*/}
-          {/*  Username: {formValue}*/}
-          {/*  <br />*/}
-          {/*  Loading: {loading.toString()}*/}
-          {/*  <br />*/}
-          {/*  Username Valid: {isValid.toString()}*/}
-          {/*</div>*/}
-        </form>
-      </section>
-    )
+        </label>
+        <div className={"inline-block mb-2"}>
+          <button
+            type="submit"
+            className={"btn btn-success"}
+            disabled={!isValid}
+          >
+            Choose
+          </button>
+        </div>
+        <UsernameMessage
+          username={formValue}
+          isValid={isValid}
+          isLoading={isLoading}
+        />
+      </form>
+    </section>
   );
 }
 
-function UsernameMessage({ username, isValid, loading }) {
-  if (loading) {
+function UsernameMessage({ username, isValid, isLoading }) {
+  if (isLoading) {
     return <p>Checking... 🧐</p>;
   } else if (isValid) {
     return (

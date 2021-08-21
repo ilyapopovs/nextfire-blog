@@ -1,53 +1,46 @@
 import PostContent from "components/PostContent";
-import { firestore, getUserWithUsername, postToJSON } from "lib/firebase";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import AuthCheck from "components/AuthCheck";
 import HeartButton from "components/HeartButton";
 import Link from "next/link";
+import {
+  getAllPosts,
+  getPostDocBySlug,
+  getPostRefByPath,
+} from "repositories/postsRepository";
+import { PostModel } from "structures/postModel";
 
 export async function getStaticProps({ params }) {
   const { username, slug } = params;
-  const userDoc = await getUserWithUsername(username);
 
-  let post;
-  let path;
-
-  if (userDoc) {
-    const postRef = userDoc.ref.collection("posts").doc(slug);
-    post = postToJSON(await postRef.get());
-
-    path = postRef.path;
-  }
+  const postDoc = await getPostDocBySlug(slug, { username });
+  const post = postDoc
+    ? PostModel.fromDocumentSnapshot(postDoc).toSerializedPost()
+    : null;
+  const postPath = postDoc?.ref.path;
 
   return {
-    props: { post, path },
+    props: { post, postPath },
     revalidate: 100,
   };
 }
 
+/**
+ * Note: Path data retrieval can be improved with Admin SDK
+ */
 export async function getStaticPaths() {
-  // Optional todo: Improve using Admin SDK to select empty docs
-  const snapshot = await firestore.collectionGroup("posts").get();
+  const allPublishedPosts = await getAllPosts();
 
-  const paths = snapshot.docs.map((doc) => {
-    const { slug, username } = doc.data();
-    return {
-      params: { username, slug },
-    };
-  });
+  // this structure format is required by Next.js
+  const paths = allPublishedPosts.map((post) => ({
+    params: { username: post.username, slug: post.slug },
+  }));
 
-  return {
-    // must be in this format:
-    // paths: [
-    //   { params: { username, slug }}
-    // ],
-    paths,
-    fallback: "blocking",
-  };
+  return { paths, fallback: "blocking" };
 }
 
 export default function Post(props) {
-  const postRef = firestore.doc(props.path);
+  const postRef = getPostRefByPath(props.postPath);
   const [realtimePost] = useDocumentData(postRef);
 
   const post = realtimePost || props.post;
@@ -59,10 +52,8 @@ export default function Post(props) {
       </section>
 
       <div style={{ flex: 1 }}>
-        <aside className={"card sticky my-0"} >
-          <p className={"font-bold mb-6"}>
-            Hearts: {post.heartCount || 0} ❤️
-          </p>
+        <aside className={"card sticky my-0"}>
+          <p className={"font-bold mb-6"}>Hearts: {post.heartCount || 0} ❤️</p>
           <AuthCheck
             fallback={
               <Link href="/enter" passHref>
