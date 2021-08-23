@@ -15,9 +15,10 @@ export default function Footer({ themeClass }) {
           Made with React + Next.js + Firebase
         </p>
         <div className={"hidden sm:block text-theme-primary mx-6"}>|</div>
-        <div className={"pt-2 sm:pt-0"}>
+        <div className={"flex pt-2 sm:pt-0 font-sans font-normal text-sm"}>
           <Link href={"https://github.com/ilyapopovs/nextfire-blog"} passHref>
-            <a target={"_blank"} className={"mr-4"}>
+            <a target={"_blank"} className={"flex items-center mr-4"}>
+              <span className={"inline-block sm:hidden mr-2"}>GitHub</span>
               <svg
                 className={"inline logo"}
                 fill={"hsl(var(--color-text-primary))"}
@@ -31,7 +32,8 @@ export default function Footer({ themeClass }) {
             </a>
           </Link>
           <Link href={"https://www.linkedin.com/in/ilyapopovs/"} passHref>
-            <a target={"_blank"}>
+            <a target={"_blank"} className={"flex items-center"}>
+              <span className={"inline-block sm:hidden mr-2"}>LinkedIn</span>
               <svg
                 className={"inline logo"}
                 fill={"hsl(var(--color-text-primary))"}
