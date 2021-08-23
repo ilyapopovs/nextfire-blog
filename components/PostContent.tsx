@@ -1,7 +1,6 @@
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
-// UI component for main post content
 export default function PostContent({ post }) {
   const createdAt: Date =
     typeof post?.createdAt === "number"

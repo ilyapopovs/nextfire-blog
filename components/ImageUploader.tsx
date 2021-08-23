@@ -1,57 +1,45 @@
 import { useState } from "react";
-import { auth, storage, STATE_CHANGED } from "../lib/firebase";
 import Loader from "./Loader";
+import * as UploadService from "services/uploadService";
 
-// Uploads images to Firebase Storage
+/**
+ * Uploads images to Firebase Storage returning the download url
+ */
 export default function ImageUploader() {
-  const [uploading, setUploading] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const [progressIndex, setProgressIndex] = useState(0);
   const [downloadURL, setDownloadURL] = useState(null);
 
   // Creates a Firebase Upload Task
   const uploadFile = async (e) => {
-    // Get the file
     const file: any = Array.from(e.target.files)[0];
-    const extension = file.type.split("/")[1];
 
-    // Makes reference to the storage bucket location
-    const ref = storage.ref(
-      `uploads/${auth.currentUser.uid}/${Date.now()}.${extension}`
-    );
-    setUploading(true);
+    function onStarted() {
+      setIsUploading(true);
+    }
 
-    // Starts the upload
-    const task = ref.put(file);
+    function onProgress(progressPercent: number) {
+      setProgressIndex(progressPercent);
+    }
 
-    // Listen to updates to upload task
-    task.on(STATE_CHANGED, (snapshot) => {
-      const pct = (
-        (snapshot.bytesTransferred / snapshot.totalBytes) *
-        100
-      ).toFixed(0);
-      // @ts-ignore
-      setProgress(pct);
+    function onFinished(downloadUrl: string) {
+      setDownloadURL(downloadUrl);
+      setIsUploading(false);
+    }
 
-      // Get downloadURL AFTER task resolves (Note: this is not a native Promise)
-      task
-        .then((d) => ref.getDownloadURL())
-        .then((url) => {
-          setDownloadURL(url);
-          setUploading(false);
-        });
-    });
+    await UploadService.uploadFile(file, { onStarted, onProgress, onFinished });
   };
 
   return (
     <div className={"flex flex-col sm:flex-row"}>
-      {uploading && (
+      {isUploading && (
         <div className={"flex items-center"}>
-          <Loader show={uploading} />
-          <h3 className={"ml-4"}>{progress}%</h3>
+          <Loader isShown={isUploading} />
+          <h3 className={"ml-4"}>{progressIndex}%</h3>
         </div>
       )}
 
-      {!uploading && (
+      {!isUploading && (
         <div
           className={"w-full sm:w-52 mr-4 mb-4 sm:mb-0"}
           style={{ minWidth: "208px" }}

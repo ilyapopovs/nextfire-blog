@@ -1,3 +1,3 @@
-export default function Loader({ show }) {
-  return show ? <div className={"loader"} /> : null;
+export default function Loader({ isShown }) {
+  return isShown ? <div className={"loader"} /> : null;
 }

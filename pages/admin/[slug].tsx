@@ -1,17 +1,21 @@
-import AuthCheck from "../../components/AuthCheck";
-import { firestore, auth, serverTimestamp } from "../../lib/firebase";
-import ImageUploader from "../../components/ImageUploader";
-
+import AuthCheck from "components/AuthCheck";
+import ImageUploader from "components/ImageUploader";
 import { useState } from "react";
 import { useRouter } from "next/router";
-
-import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import { useForm } from "react-hook-form";
 import ReactMarkdown from "react-markdown";
+import { PostInterface } from "structures/postModel";
+import {
+  deletePost,
+  getPostRefBySlugAndUserUid,
+  updatePost,
+} from "repositories/postsRepository";
+import { getCurrentUserUid } from "services/authService";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 
-export default function AdminPostEdit(props) {
+export default function AdminPostEdit() {
   return (
     <AuthCheck>
       <PostManager />
@@ -20,18 +24,13 @@ export default function AdminPostEdit(props) {
 }
 
 function PostManager() {
-  const [preview, setPreview] = useState(false);
-
+  const [isPreview, setIsPreview] = useState(false);
   const router = useRouter();
   const { slug } = router.query;
 
-  const postRef = firestore
-    .collection("users")
-    .doc(auth.currentUser.uid)
-    .collection("posts")
-    // @ts-ignore
-    .doc(slug);
-  const [post]: [any, boolean, Error] = useDocumentDataOnce(postRef);
+  // @ts-ignore
+  const postRef = getPostRefBySlugAndUserUid(slug, getCurrentUserUid());
+  const [post]: [PostInterface, boolean, Error] = useDocumentDataOnce(postRef);
 
   return (
     <main className={"container"}>
@@ -41,14 +40,10 @@ function PostManager() {
             <h1 className={"text-2xl font-bold"}>{post.title}</h1>
             <p>ID: {post.slug}</p>
 
-            <PostForm
-              postRef={postRef}
-              defaultValues={post}
-              preview={preview}
-            />
+            <EditPostForm postRef={postRef} post={post} isPreview={isPreview} />
           </section>
 
-          <aside className={'mb-10 lg:mb-0'}>
+          <aside className={"mb-10 lg:mb-0"}>
             <div className={"card"}>
               <h3 className={"text-xl font-bold"}>Tools</h3>
               <div
@@ -56,8 +51,11 @@ function PostManager() {
                   "flex flex-col sm:flex-row lg:flex-col lg:w-72 sm:-mr-4"
                 }
               >
-                <button className={"btn"} onClick={() => setPreview(!preview)}>
-                  {preview ? "Edit" : "Preview"}
+                <button
+                  className={"btn"}
+                  onClick={() => setIsPreview(!isPreview)}
+                >
+                  {isPreview ? "Edit" : "Preview"}
                 </button>
                 <Link href={`/${post.username}/${post.slug}`} passHref>
                   <a className={"btn btn-primary"} target={"_blank"}>
@@ -74,35 +72,29 @@ function PostManager() {
   );
 }
 
-function PostForm({ defaultValues, postRef, preview }) {
+function EditPostForm({ post, postRef, isPreview }) {
   const { register, errors, handleSubmit, formState, reset, watch } = useForm({
-    defaultValues,
+    defaultValues: post,
     mode: "onChange",
   });
-
   const { isValid, isDirty } = formState;
 
-  const updatePost = async ({ content, published }) => {
-    await postRef.update({
-      content,
-      published,
-      updatedAt: serverTimestamp(),
-    });
+  const applyPostEdit = async ({ content, isPublished }) => {
+    await updatePost({ content, isPublished }, { postRef });
 
-    reset({ content, published });
-
+    reset({ content, isPublished });
     toast.success("Post updated successfully!");
   };
 
   return (
-    <form onSubmit={handleSubmit(updatePost)}>
-      {preview && (
+    <form onSubmit={handleSubmit(applyPostEdit)}>
+      {isPreview && (
         <div className={"card"}>
           <ReactMarkdown>{watch("content")}</ReactMarkdown>
         </div>
       )}
 
-      <div className={preview ? "hidden" : ""}>
+      <div className={isPreview ? "hidden" : ""}>
         <div className={"my-4"}>
           <ImageUploader />
         </div>
@@ -124,7 +116,7 @@ function PostForm({ defaultValues, postRef, preview }) {
         <label className={"flex items-center my-4 text-xl cursor-pointer"}>
           <input
             className={"w-6 h-6 mr-2"}
-            name="published"
+            name="isPublished"
             type="checkbox"
             ref={register}
           />
@@ -146,16 +138,16 @@ function PostForm({ defaultValues, postRef, preview }) {
 function DeletePostButton({ postRef }) {
   const router = useRouter();
 
-  const deletePost = async () => {
+  const removePost = async () => {
     if (confirm("Are you sure?")) {
-      await postRef.delete();
+      await deletePost(postRef);
       router.push("/admin").then();
       toast("Post deleted", { icon: "🗑️" });
     }
   };
 
   return (
-    <button className={"btn btn-danger"} onClick={deletePost}>
+    <button className={"btn btn-danger"} onClick={removePost}>
       Delete
     </button>
   );

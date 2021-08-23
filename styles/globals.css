@@ -16,6 +16,8 @@
   --color-btn-secondary: 208, 11%, 74%;
   --color-btn-success: 140, 72%, 45%;
   --color-btn-danger: 0, 72%, 55%;
+  --footer-height-desktop: 4rem;
+  --footer-height-mobile: 6rem;
 }
 
 .dark-theme {
@@ -60,10 +62,35 @@
     @apply font-noto;
   }
 
-  #theme-container {
+  #main-container {
+    min-height: calc(100vh - var(--footer-height-mobile));
+  }
+
+  #footer {
+    height: var(--footer-height-mobile);
+  }
+
+  /* `sm` breakpoint*/
+  @media (min-width: 640px) {
+    #main-container {
+      min-height: calc(100vh - var(--footer-height-desktop));
+    }
+
+    #footer {
+      height: var(--footer-height-desktop);
+    }
+  }
+
+
+  .theme-container {
     @apply text-theme-primary bg-theme-secondary;
-    min-height: 100vh;
-    transition: background-color ease-in 200ms, color ease-in 200ms;
+    transition: background-color ease-in 200ms, color ease-in 200ms,
+      border-top-color ease-in 200ms, border-right-color ease-in 200ms,
+      border-bottom-color ease-in 200ms, border-left-color ease-in 200ms;
+  }
+
+  svg.logo:hover {
+    filter: brightness(90%);
   }
 
   .btn {
