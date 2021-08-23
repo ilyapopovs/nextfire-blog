@@ -8,6 +8,7 @@ export default function MetaTags({
   return (
     <Head>
       <title>{title}</title>
+      <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       {/*<meta name="twitter:site" content="@tag" />*/}
       <meta name="twitter:title" content={title} />
