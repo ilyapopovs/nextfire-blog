@@ -16,6 +16,8 @@
   --color-btn-secondary: 208, 11%, 74%;
   --color-btn-success: 140, 72%, 45%;
   --color-btn-danger: 0, 72%, 55%;
+  --footer-height-desktop: 4rem;
+  --footer-height-mobile: 6rem;
 }
 
 .dark-theme {
@@ -61,8 +63,24 @@
   }
 
   #main-container {
-    min-height: calc(100vh - 4rem);
+    min-height: calc(100vh - var(--footer-height-mobile));
   }
+
+  #footer {
+    height: var(--footer-height-mobile);
+  }
+
+  /* `sm` breakpoint*/
+  @media (min-width: 640px) {
+    #main-container {
+      min-height: calc(100vh - var(--footer-height-desktop));
+    }
+
+    #footer {
+      height: var(--footer-height-desktop);
+    }
+  }
+
 
   .theme-container {
     @apply text-theme-primary bg-theme-secondary;
