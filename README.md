@@ -1,34 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Nextfire Blog
 
-## Getting Started
+A demo blog app inspired by Dev.to and Medium blogging websites
 
-First, run the development server:
+Built with [React](https://reactjs.org/) + [Next.js](https://nextjs.org/) + [Firebase](https://firebase.google.com/), 
+styled with [Tailwind CSS](https://tailwindcss.com/) and deployed to [Vercel](https://vercel.com) \
+Check it live at [demo1.popovs.dev](https://demo1.popovs.dev)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+The purpose of this app is to demonstrate the capability to implement a certain **feature set**, \
+Which includes, but is not limited to:
+* Blogging website implemented as a Single Page Application
+* Server-side rendering of publicly accessible pages (for better SEO)
+* Likes/hearts/upvotes functionality in realtime
+* Lazy loading of posts
+* Basic CMS with full set of CRUD operations
+* Responsive design
+* Dynamic switching between Light and Dark themes
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Architecture
 
-## Learn More
+This app uses Firebase as its headless backend, thus it consists of 2 parts:
+1. User-facing app (deployed on and fetched from Vercel)
+2. Firebase services (hosted by Google)
 
-To learn more about Next.js, take a look at the following resources:
+Here's a diagram of how it works!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![Architecture Diagram](./nextfire-blog-architecture.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Credits
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Up until the [First Pull Request](https://github.com/ilyapopovs/nextfire-blog/pull/1) the app had been developed by 
+going through Jeff Delaney's [Next.js Firebase Course](https://fireship.io/courses/react-next-firebase/). \
+Thereafter, I continued independently improving the app and adding new features as I saw fit. The list of those 
+features can be seen in the [commit history](https://github.com/ilyapopovs/nextfire-blog/commits/main).
