@@ -4,11 +4,13 @@ import { useState } from "react";
 import { getPosts, getPostsAfter } from "repositories/postsRepository";
 
 // Max posts to query per page
-const PER_PAGE = 1;
+const POSTS_PER_PAGE = parseInt(process.env.NEXT_PUBLIC_POSTS_PER_PAGE);
 
 export async function getServerSideProps() {
   // serializing because otherwise `getServerSideProps` is complaining
-  const posts = (await getPosts(PER_PAGE)).map((post) => post.toSerializedPost());
+  const posts = (await getPosts(POSTS_PER_PAGE)).map((post) =>
+    post.toSerializedPost()
+  );
 
   return {
     props: { posts }, // will be passed to the page component as props
@@ -24,10 +26,10 @@ export default function Home(props) {
   const loadMorePosts = async () => {
     setIsLoading(true);
     const lastPost = posts[posts.length - 1];
-    const newPosts = await getPostsAfter(lastPost.createdAt, PER_PAGE);
+    const newPosts = await getPostsAfter(lastPost.createdAt, POSTS_PER_PAGE);
 
     newPosts.length && setPosts(posts.concat(newPosts));
-    newPosts.length !== PER_PAGE && setPostsEnd(true);
+    newPosts.length !== POSTS_PER_PAGE && setPostsEnd(true);
 
     setIsLoading(false);
   };
