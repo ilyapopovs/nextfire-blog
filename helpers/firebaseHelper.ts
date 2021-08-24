@@ -3,15 +3,15 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
-// public keys/ids - safe to expose
+// public keys/ids from .env (pulling from .env for easier dev env setup)
 const firebaseConfig = {
-  apiKey: "AIzaSyCco1ck5WsMdgTsvpIy8iT5WlYS7qVyf_M",
-  authDomain: "nextfire-blog-app.firebaseapp.com",
-  projectId: "nextfire-blog-app",
-  storageBucket: "nextfire-blog-app.appspot.com",
-  messagingSenderId: "45574597818",
-  appId: "1:45574597818:web:1a481cd315a16498046683",
-  measurementId: "G-XW5TT4V4K5",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
 if (!firebase.apps.length) {
