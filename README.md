@@ -28,7 +28,7 @@ This app uses Firebase as its headless backend, thus it consists of 2 parts:
 
 Here's a diagram of how it works!
 
-![Architecture Diagram](./nextfire-blog-architecture.png)
+![Architecture Diagram](docs/nextfire-blog-architecture.png)
 
 
 ## Credits
