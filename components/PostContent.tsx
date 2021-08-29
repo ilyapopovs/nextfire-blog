@@ -17,7 +17,7 @@ export default function PostContent({ post }) {
         </Link>{" "}
         on {createdAt.toDateString()}
       </span>
-      <div className={"mt-4"}>
+      <div className={"mt-4 break-words"}>
         <ReactMarkdown>{post?.content}</ReactMarkdown>
       </div>
     </div>
