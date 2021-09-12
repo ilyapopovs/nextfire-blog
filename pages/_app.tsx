@@ -12,7 +12,10 @@ function MyApp({ Component, pageProps }) {
   const userData = useUserData();
   const [themeClass, setThemeClass] = useState(DEFAULT_THEME);
 
-  useEffect(() => document.body.classList.add(DEFAULT_THEME), []);
+  useEffect(() => {
+    document.body.classList.add('theme-container');
+    document.body.classList.add(DEFAULT_THEME);
+  }, []);
 
   return (
     <>
