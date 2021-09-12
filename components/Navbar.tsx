@@ -107,8 +107,11 @@ function SwitchThemeButton({ themeClass, setThemeClass }) {
 
   function switchTheme() {
     const newTheme = Theme.THEME_SEQUENCE[themeClass] ?? Theme.DEFAULT_THEME;
+    const oldTheme = themeClass;
 
     setThemeClass(newTheme);
+    document.body.classList.add(newTheme);
+    document.body.classList.remove(oldTheme);
     setIconName(
       Theme.THEME_ICONS_SEQUENCE[newTheme] ??
         Theme.THEME_ICONS_SEQUENCE[Theme.DEFAULT_THEME]
