@@ -1,10 +1,12 @@
 import Link from "next/link";
 
-export default function Footer({ themeClass }) {
+export default function Footer() {
   return (
     <footer
       id="footer"
-      className={`theme-container ${themeClass} relative w-full bg-theme-primary border-t border-theme-primary`}
+      className={
+        "theme-container relative w-full bg-theme-primary border-t border-theme-primary"
+      }
     >
       <div
         className={
