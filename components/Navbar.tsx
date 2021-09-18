@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "helpers/contextsHelper";
 import { SignOutButton } from "components/SignOutButton";
 import * as Theme from "helpers/themeHelper";
@@ -29,6 +29,7 @@ export default function Navbar({ themeClass, setThemeClass }) {
           </li>
           <li>
             {user ? (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 onClick={() => setIsDropdownShown(!isDropdownShown)}
                 src={user?.photoURL}
@@ -102,20 +103,25 @@ export default function Navbar({ themeClass, setThemeClass }) {
 
 function SwitchThemeButton({ themeClass, setThemeClass }) {
   const [iconName, setIconName] = useState(
-    Theme.THEME_ICONS_SEQUENCE[Theme.DEFAULT_THEME]
+    Theme.THEME_ICONS_SEQUENCE[themeClass]
   );
 
+  useEffect(() => {
+    setIconName(
+      Theme.THEME_ICONS_SEQUENCE[themeClass] ??
+        Theme.THEME_ICONS_SEQUENCE[Theme.DEFAULT_THEME]
+    );
+  }, [themeClass]);
+
   function switchTheme() {
-    const newTheme = Theme.THEME_SEQUENCE[themeClass] ?? Theme.DEFAULT_THEME;
-    const oldTheme = themeClass;
+    const newTheme: string =
+      Theme.THEME_SEQUENCE[themeClass] ?? Theme.DEFAULT_THEME;
+    const oldTheme: string = themeClass;
 
     setThemeClass(newTheme);
     document.body.classList.add(newTheme);
     document.body.classList.remove(oldTheme);
-    setIconName(
-      Theme.THEME_ICONS_SEQUENCE[newTheme] ??
-        Theme.THEME_ICONS_SEQUENCE[Theme.DEFAULT_THEME]
-    );
+    localStorage.setItem(Theme.LOCAL_STORAGE_KEY, newTheme);
   }
 
   return (

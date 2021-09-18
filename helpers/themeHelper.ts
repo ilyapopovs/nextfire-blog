@@ -19,3 +19,5 @@ export const THEME_ICONS_SEQUENCE = {
 };
 
 export const DEFAULT_THEME = THEME_SYSTEM;
+
+export const LOCAL_STORAGE_KEY = "themeClass";
